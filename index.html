@@ -1,0 +1,66 @@
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!--メッセージ表示-->
+  <div id="msg"></div>
+  <!--選択肢-->
+  <div id="f1box">
+  <form id="f1">
+    <!--value←動いているかの確認の為だけに使用-->
+    <!--btn押す→change_scenarioへ飛ぶ.
+        そのままだと、htmlのpostになるので、return falseで制御を止める-->
+    <input type="submit" value="xxx" id="choice1" onclick="change_scenario(0);return false;"><br>
+    <input type="submit" value="xxx" id="choice2" onclick="change_scenario(1);return false;"><br>
+    <input type="submit" value="xxx" id="choice3" onclick="change_scenario(2);return false;"><br>
+  </form>
+  </div>
+  
+  <script>
+    /*現在地のシナリオ番号の表示*/
+    var id = 0;    /*最初は0番*/
+    var goto = []; /*選択肢を選んだ時の行き先の配列枠*/
+    /*シナリオデータを入れる枠(配列方式)(他にも画像,音楽入れれる)*/
+    var data = [
+      /*初期表示をする為の,シナリオ０番.msg→AAA*/
+      /*選択肢の用意-A1,A2,A3を用意、
+        それぞれのBtnを押した時の、シナリオの飛び先を設定*/
+      /*0番に飛んだ時のmsgがAAA。その時の選択肢がA1,A2,A3*/
+      [0, "「3時のおやつ」が部室から消えた。<br>午前中に部室へ入ったのは３人。犯人は誰？<br><br>犯人は", 1, "( ͡° ͜ʖ ͡°)  山田あい", 2, "(^人.^）山川うえ", 3, "ϵ( 'Θ' )϶  山内おか"]
+     ,[1, "( ͡° oʖ ͡°)  山田あい<br>「ちちちがうよ、山川とスーパーに行ってたんだよ」<br><br>犯人は", 0, "戻る", 2, "(^人^)  山川うえ", 3, "ϵ( 'Θ' )϶  山内おか"]
+     ,[2, "（^/n.^)  山川うえ<br>「違うよー！部室に荷物を置いた後、スーパーへ買い出しに行ったんだよ」<br><br>犯人は", 0, "戻る", 1, "( ͡° ͜ʖ ͡°)  山田あい", 3, "ϵ( 'Θ' )϶  山内おか"]
+     ,[3, "ϵ( -Θ- )϶  山内おか<br>「ごめんなさい、つい。。。」<br><br>無事、事件は解決した", 0, "戻る", 0, "戻る", 0, "戻る"]
+    ];
+    
+    /*この時点で、自分のカレントidが変わっているので、再描画する*/
+    disp_scenario();
+    
+    /*画面、描画用の関数*/
+    function disp_scenario(){
+      /*用意してあるmsgを,画面のmsg枠に入れる*/
+      msg.innerHTML = data[id][1];
+      /*Btnに選択肢の文字を入れる*/
+      document.forms.f1.choice1.value = data[id][3];
+      document.forms.f1.choice2.value = data[id][5];
+      document.forms.f1.choice3.value = data[id][7];
+      
+      /*ボタンを押した時に、行き先のシナリオ番号を制御する*/
+      /*行き先のgoto0に、btnを押した時の行き先のシナリオ番号を入れておく*/
+      goto[0] = data[id][2];
+      goto[1] = data[id][4];
+      goto[2] = data[id][6];
+    }
+    
+    /*btnを押した時の処理*/
+    /*btnを押された時に、行き先に飛ベる様に、シナリオ番号を変更する*/
+    function change_scenario(selectno){
+      /*選ばれた番号をセレクト番号に入れる*/
+      id = goto[selectno];
+      /*gotoの012それぞれに入っているシナリオ番号をidに入れる*/
+      disp_scenario();
+    }
+    
+  </script>
+</body>
+</html>
